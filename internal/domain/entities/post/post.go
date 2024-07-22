@@ -19,7 +19,7 @@ type post struct {
 	notification *notification.Notification
 }
 
-func NewPost(title string, body string, authorName string, publishedAt time.Time) (*post, []error) {
+func NewPost(title string, body string, authorName string, publishedAt time.Time) (*post, *errors.ErrorModel) {
 	post := &post{
 		id:           entities.NewID(),
 		title:        title,
@@ -27,12 +27,12 @@ func NewPost(title string, body string, authorName string, publishedAt time.Time
 		authorName:   authorName,
 		publishedAt:  publishedAt,
 		createdAt:    time.Now(),
-		notification: notification.NewNotification(),
+		notification: notification.NewNotification("Post"),
 	}
 
-	errs := post.validate()
-	if errs != nil {
-		return nil, errs
+	entityError := post.validate()
+	if entityError != nil {
+		return nil, entityError
 	}
 
 	return post, nil
@@ -70,7 +70,7 @@ func (p *post) HasErrors() bool {
 	return p.notification.HasErrors()
 }
 
-func (p *post) validate() []error {
+func (p *post) validate() *errors.ErrorModel {
 	if p.title == "" {
 		err := errors.NewIsRequiredError("Title")
 		p.notification.AddError(err)
@@ -82,9 +82,13 @@ func (p *post) validate() []error {
 	}
 
 	if p.authorName == "" {
-		err := errors.NewIsRequiredError("AuthorName")
+		err := errors.NewIsRequiredError("Author's name")
 		p.notification.AddError(err)
 	}
 
-	return p.notification.GetErrors()
+	if p.notification.HasErrors() {
+		return errors.NewErrorModel(p.notification.GetErrors(), p.notification.GetErrorsMessage())
+	}
+
+	return nil
 }
