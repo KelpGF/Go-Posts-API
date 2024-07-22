@@ -4,7 +4,6 @@ import (
 	"testing"
 	"time"
 
-	"github.com/KelpGF/Go-Posts-API/internal/domain/errors"
 	"github.com/stretchr/testify/suite"
 )
 
@@ -16,7 +15,6 @@ type PostEntityTestSuite struct {
 
 func (suite *PostEntityTestSuite) SetupTest() {
 	post, _ := NewPost("Hello World", "This is a test post", "John Doe", time.Now())
-
 	suite.post = post
 }
 
@@ -32,14 +30,13 @@ func (suite *PostEntityTestSuite) TestPostEntity() {
 }
 
 func (suite *PostEntityTestSuite) TestPostEntityValidation() {
-	post, errs := NewPost("", "", "", time.Now())
+	post, entityError := NewPost("", "", "", time.Now())
 
 	suite.Nil(post)
-	suite.Equal([]error{
-		errors.NewIsRequiredError("Title"),
-		errors.NewIsRequiredError("Body"),
-		errors.NewIsRequiredError("AuthorName"),
-	}, errs)
+	suite.Equal(
+		entityError.Message,
+		"Post: Title is required, Body is required, Author's name is required",
+	)
 }
 
 func TestSuite(t *testing.T) {
