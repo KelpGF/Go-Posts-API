@@ -32,15 +32,14 @@ func (suite *PostEntityTestSuite) TestPostEntity() {
 }
 
 func (suite *PostEntityTestSuite) TestPostEntityValidation() {
-	post, _ := NewPost("", "", "", time.Now())
+	post, errs := NewPost("", "", "", time.Now())
 
-	suite.True(post.HasErrors())
+	suite.Nil(post)
 	suite.Equal([]error{
 		errors.NewIsRequiredError("Title"),
 		errors.NewIsRequiredError("Body"),
 		errors.NewIsRequiredError("AuthorName"),
-	}, post.notification.GetErrors())
-
+	}, errs)
 }
 
 func TestSuite(t *testing.T) {

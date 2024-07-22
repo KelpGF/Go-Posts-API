@@ -19,7 +19,7 @@ type post struct {
 	notification *notification.Notification
 }
 
-func NewPost(title string, body string, authorName string, publishedAt time.Time) (*post, error) {
+func NewPost(title string, body string, authorName string, publishedAt time.Time) (*post, []error) {
 	post := &post{
 		id:           entities.NewID(),
 		title:        title,
@@ -30,9 +30,9 @@ func NewPost(title string, body string, authorName string, publishedAt time.Time
 		notification: notification.NewNotification(),
 	}
 
-	err := post.validate()
-	if err != nil {
-		return nil, err
+	errs := post.validate()
+	if errs != nil {
+		return nil, errs
 	}
 
 	return post, nil
@@ -70,7 +70,7 @@ func (p *post) HasErrors() bool {
 	return p.notification.HasErrors()
 }
 
-func (p *post) validate() error {
+func (p *post) validate() []error {
 	if p.title == "" {
 		err := errors.NewIsRequiredError("Title")
 		p.notification.AddError(err)
@@ -86,5 +86,5 @@ func (p *post) validate() error {
 		p.notification.AddError(err)
 	}
 
-	return nil
+	return p.notification.GetErrors()
 }
