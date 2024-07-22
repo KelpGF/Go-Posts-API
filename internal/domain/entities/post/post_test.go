@@ -23,10 +23,12 @@ func (suite *PostEntityTestSuite) SetupTest() {
 func (suite *PostEntityTestSuite) TestPostEntity() {
 	suite.False(suite.post.HasErrors())
 
+	suite.NotEmpty(suite.post.GetId())
 	suite.Equal("Hello World", suite.post.GetTitle())
 	suite.Equal("This is a test post", suite.post.GetBody())
 	suite.Equal("John Doe", suite.post.GetAuthorName())
 	suite.Equal(time.Now().Format(time.RFC3339), suite.post.GetPublishedAt().Format(time.RFC3339))
+	suite.NotEmpty(suite.post.createdAt)
 }
 
 func (suite *PostEntityTestSuite) TestPostEntityValidation() {

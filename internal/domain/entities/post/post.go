@@ -3,12 +3,13 @@ package entities
 import (
 	"time"
 
+	entities "github.com/KelpGF/Go-Posts-API/internal/domain/entities/id"
 	"github.com/KelpGF/Go-Posts-API/internal/domain/errors"
 	"github.com/KelpGF/Go-Posts-API/internal/domain/notification"
 )
 
 type post struct {
-	id          int
+	id          entities.ID
 	title       string
 	body        string
 	authorName  string
@@ -20,6 +21,7 @@ type post struct {
 
 func NewPost(title string, body string, authorName string, publishedAt time.Time) (*post, error) {
 	post := &post{
+		id:           entities.NewID(),
 		title:        title,
 		body:         body,
 		authorName:   authorName,
@@ -36,8 +38,8 @@ func NewPost(title string, body string, authorName string, publishedAt time.Time
 	return post, nil
 }
 
-func (p *post) GetId() int {
-	return p.id
+func (p *post) GetId() string {
+	return p.id.String()
 }
 
 func (p *post) GetTitle() string {
