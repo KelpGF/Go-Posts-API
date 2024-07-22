@@ -1,11 +1,14 @@
 package notification
 
 type Notification struct {
-	errors []error
+	context string
+	errors  []error
 }
 
-func NewNotification() *Notification {
-	return &Notification{}
+func NewNotification(context string) *Notification {
+	return &Notification{
+		context: context,
+	}
 }
 
 func (n *Notification) AddError(err error) {
@@ -18,4 +21,20 @@ func (n *Notification) GetErrors() []error {
 
 func (n *Notification) HasErrors() bool {
 	return len(n.errors) > 0
+}
+
+func (n *Notification) GetErrorsMessage() string {
+	var errorsString string = n.context + ": "
+
+	length := len(n.errors)
+
+	for idx, err := range n.errors {
+		errorsString += err.Error()
+
+		if idx < length-1 {
+			errorsString += ", "
+		}
+	}
+
+	return errorsString
 }
