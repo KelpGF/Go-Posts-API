@@ -1,7 +1,6 @@
 package errors
 
 import (
-	"fmt"
 	"testing"
 
 	"github.com/stretchr/testify/suite"
@@ -19,7 +18,6 @@ func (suite *IsRequiredTestSuite) SetupTest() {
 
 func (suite *IsRequiredTestSuite) TestIsRequiredErrorMessage() {
 	errMessage := suite.err.Error()
-	fmt.Println(errMessage)
 	suite.Equal("Title is required", errMessage)
 }
 

@@ -2,15 +2,18 @@ package usecases
 
 import (
 	"fmt"
+	"time"
 
-	entities "github.com/KelpGF/Go-Posts-API/internal/domain/entities/post"
 	"github.com/KelpGF/Go-Posts-API/internal/domain/errors"
-	"github.com/KelpGF/Go-Posts-API/internal/domain/models"
+	"github.com/KelpGF/Go-Posts-API/internal/domain/factories"
 	"github.com/KelpGF/Go-Posts-API/internal/domain/repositories"
 )
 
 type CreatePostUseCaseInput struct {
-	Data *models.CreatePost
+	Title       string    `json:"title"`
+	Body        string    `json:"body"`
+	AuthorName  string    `json:"author_name"`
+	PublishedAt time.Time `json:"published_at"`
 }
 
 type CreatePostUseCaseOutput struct {
@@ -19,27 +22,33 @@ type CreatePostUseCaseOutput struct {
 
 type CreatePostUseCase struct {
 	CreatePostRepository repositories.CreatePostRepository
+	PostFactory          factories.PostFactory
 }
 
-func NewCreatePostUseCase(createPostRepository repositories.CreatePostRepository) *CreatePostUseCase {
+func NewCreatePostUseCase(
+	createPostRepository repositories.CreatePostRepository,
+	postFactory factories.PostFactory,
+) *CreatePostUseCase {
 	return &CreatePostUseCase{
 		CreatePostRepository: createPostRepository,
+		PostFactory:          postFactory,
 	}
 }
 
 func (uc *CreatePostUseCase) Execute(input *CreatePostUseCaseInput) (*CreatePostUseCaseOutput, *errors.ErrorModel) {
-	post, err := entities.NewPost(
-		input.Data.Title,
-		input.Data.Body,
-		input.Data.AuthorName,
-		input.Data.PublishedAt,
+	post, err := uc.PostFactory.NewPost(
+		input.Title,
+		input.Body,
+		input.AuthorName,
+		input.PublishedAt,
 	)
+
 	if err != nil {
 		return nil, err
 	}
 
 	externalError := uc.CreatePostRepository.Create(&repositories.CreatePostRepositoryInput{
-		Data: input.Data,
+		Data: post,
 	})
 	if externalError != nil {
 		errorMessage := fmt.Sprintf("Error creating post: %s", externalError.Error())

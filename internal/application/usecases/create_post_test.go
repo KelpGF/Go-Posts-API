@@ -5,22 +5,15 @@ import (
 	"testing"
 	"time"
 
+	entities "github.com/KelpGF/Go-Posts-API/internal/domain/entities/post"
 	domainErrors "github.com/KelpGF/Go-Posts-API/internal/domain/errors"
-	"github.com/KelpGF/Go-Posts-API/internal/domain/models"
 	"github.com/KelpGF/Go-Posts-API/internal/domain/repositories"
+	"github.com/KelpGF/Go-Posts-API/test/database/post"
 	"github.com/stretchr/testify/mock"
 	"github.com/stretchr/testify/suite"
 )
 
-type CreatePostRepositoryMock struct {
-	mock.Mock
-}
-
-func (m *CreatePostRepositoryMock) Create(input *repositories.CreatePostRepositoryInput) error {
-	args := m.Called(input)
-
-	return args.Error(0)
-}
+var emptyModelErr *domainErrors.ErrorModel
 
 type CreatePostUseCaseTestSuite struct {
 	suite.Suite
@@ -28,25 +21,47 @@ type CreatePostUseCaseTestSuite struct {
 	sut                      *CreatePostUseCase
 	sutInput                 *CreatePostUseCaseInput
 	createPostRepositoryStub *CreatePostRepositoryMock
+	postFactoryStub          *MockPostFactory
 }
 
 func (suite *CreatePostUseCaseTestSuite) SetupTest() {
 	suite.createPostRepositoryStub = &CreatePostRepositoryMock{}
-	suite.sut = NewCreatePostUseCase(suite.createPostRepositoryStub)
+	suite.postFactoryStub = &MockPostFactory{}
+
+	suite.sut = NewCreatePostUseCase(
+		suite.createPostRepositoryStub,
+		suite.postFactoryStub,
+	)
+
 	suite.sutInput = &CreatePostUseCaseInput{
-		Data: &models.CreatePost{
-			Title:       "Title",
-			Body:        "Body",
-			AuthorName:  "AuthorName",
-			PublishedAt: time.Now(),
-		},
+		Title:       "Title",
+		Body:        "Body",
+		AuthorName:  "AuthorName",
+		PublishedAt: time.Date(2021, 1, 1, 0, 0, 0, 0, time.UTC),
 	}
 }
 
 func (suite *CreatePostUseCaseTestSuite) TestExecuteReturnErrorWhenPostIsInvalid() {
 	input := suite.sutInput
-	input.Data.Title = ""
-	input.Data.Body = ""
+	input.Title = ""
+	input.Body = ""
+
+	suite.postFactoryStub.On(
+		"NewPost",
+		input.Title,
+		input.Body,
+		input.AuthorName,
+		input.PublishedAt,
+	).Return(
+		post.NewMockPost(),
+		&domainErrors.ErrorModel{
+			Message: "Post: Title is required, Body is required",
+			Errors: []error{
+				domainErrors.NewIsRequiredError("Title"),
+				domainErrors.NewIsRequiredError("Body"),
+			},
+		},
+	)
 
 	post, err := suite.sut.Execute(input)
 
@@ -67,10 +82,24 @@ func (suite *CreatePostUseCaseTestSuite) TestExecuteReturnErrorWhenPostIsInvalid
 
 func (suite *CreatePostUseCaseTestSuite) TestExecuteReturnErrorWhenRepositoryFails() {
 	input := suite.sutInput
+	mockPost := post.NewMockPost()
+
+	suite.postFactoryStub.On(
+		"NewPost",
+		input.Title,
+		input.Body,
+		input.AuthorName,
+		input.PublishedAt,
+	).Return(
+		mockPost,
+		emptyModelErr,
+	)
 
 	suite.createPostRepositoryStub.On(
 		"Create",
-		&repositories.CreatePostRepositoryInput{Data: input.Data},
+		&repositories.CreatePostRepositoryInput{
+			Data: mockPost,
+		},
 	).Return(errors.New("Repository error"))
 
 	post, err := suite.sut.Execute(input)
@@ -86,11 +115,26 @@ func (suite *CreatePostUseCaseTestSuite) TestExecuteReturnErrorWhenRepositoryFai
 
 func (suite *CreatePostUseCaseTestSuite) TestExecuteReturnSuccess() {
 	input := suite.sutInput
+	mockPost := post.NewMockPost()
 
+	suite.postFactoryStub.On(
+		"NewPost",
+		input.Title,
+		input.Body,
+		input.AuthorName,
+		input.PublishedAt,
+	).Return(
+		mockPost,
+		emptyModelErr,
+	)
+
+	var emptyErr error
 	suite.createPostRepositoryStub.On(
 		"Create",
-		&repositories.CreatePostRepositoryInput{Data: input.Data},
-	).Return(nil)
+		&repositories.CreatePostRepositoryInput{
+			Data: mockPost,
+		},
+	).Return(emptyErr)
 
 	post, err := suite.sut.Execute(input)
 
@@ -102,4 +146,24 @@ func (suite *CreatePostUseCaseTestSuite) TestExecuteReturnSuccess() {
 
 func TestSuite(t *testing.T) {
 	suite.Run(t, new(CreatePostUseCaseTestSuite))
+}
+
+type CreatePostRepositoryMock struct {
+	mock.Mock
+}
+
+func (m *CreatePostRepositoryMock) Create(input *repositories.CreatePostRepositoryInput) error {
+	args := m.Called(input)
+
+	return args.Error(0)
+}
+
+type MockPostFactory struct {
+	mock.Mock
+}
+
+func (f *MockPostFactory) NewPost(title, body, authorName string, publishedAt time.Time) (entities.Post, *domainErrors.ErrorModel) {
+	args := f.Called(title, body, authorName, publishedAt)
+
+	return args.Get(0).(entities.Post), args.Get(1).(*domainErrors.ErrorModel)
 }
