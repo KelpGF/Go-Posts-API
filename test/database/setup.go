@@ -16,3 +16,12 @@ func Setup() *gorm.DB {
 
 	return db
 }
+
+func Close(db *gorm.DB) {
+	sqlDB, err := db.DB()
+	if err != nil {
+		panic(err)
+	}
+
+	sqlDB.Close()
+}

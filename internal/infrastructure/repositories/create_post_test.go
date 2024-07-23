@@ -40,6 +40,7 @@ func (suite *CreatePostRepositoryTestSuite) TestCreatePostRepositoryCreate() {
 
 func (suite *CreatePostRepositoryTestSuite) TearDownTest() {
 	suite.db.Migrator().DropTable(&entities.Post{})
+	database.Close(suite.db)
 }
 
 func TestSuite(t *testing.T) {
