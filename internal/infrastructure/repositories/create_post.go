@@ -18,11 +18,12 @@ func NewCreatePostRepository(db *gorm.DB) *CreatePostRepository {
 
 func (r *CreatePostRepository) Create(input *repositories.CreatePostRepositoryInput) error {
 	post := &entities.Post{
-		Title:       input.Data.Title,
-		Body:        input.Data.Body,
-		AuthorName:  input.Data.AuthorName,
-		PublishedAt: input.Data.PublishedAt,
-		CreatedAt:   input.Data.CreatedAt,
+		ID:          input.Data.GetId(),
+		Title:       input.Data.GetTitle(),
+		Body:        input.Data.GetBody(),
+		AuthorName:  input.Data.GetAuthorName(),
+		PublishedAt: input.Data.GetPublishedAt(),
+		CreatedAt:   input.Data.GetCreatedAt(),
 	}
 
 	if err := r.db.Create(post).Error; err != nil {

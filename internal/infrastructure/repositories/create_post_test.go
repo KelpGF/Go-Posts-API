@@ -2,12 +2,11 @@ package repositories
 
 import (
 	"testing"
-	"time"
 
-	"github.com/KelpGF/Go-Posts-API/internal/domain/models"
 	"github.com/KelpGF/Go-Posts-API/internal/domain/repositories"
 	"github.com/KelpGF/Go-Posts-API/internal/infrastructure/entities"
 	"github.com/KelpGF/Go-Posts-API/test/database"
+	"github.com/KelpGF/Go-Posts-API/test/database/post"
 	"github.com/stretchr/testify/suite"
 	"gorm.io/gorm"
 )
@@ -26,17 +25,17 @@ func (suite *CreatePostRepositoryTestSuite) SetupTest() {
 
 func (suite *CreatePostRepositoryTestSuite) TestCreatePostRepositoryCreate() {
 	input := &repositories.CreatePostRepositoryInput{
-		Data: &models.CreatePost{
-			Title:       "Hello World",
-			Body:        "This is a test post",
-			AuthorName:  "KelpGF",
-			PublishedAt: time.Now(),
-			CreatedAt:   time.Now(),
-		},
+		Data: post.NewMockPost(),
 	}
 
 	err := suite.sut.Create(input)
 	suite.NoError(err)
+
+	var post entities.Post
+	suite.db.First(&post, "id = ?", input.Data.GetId())
+
+	suite.Equal(input.Data.GetId(), post.ID)
+	suite.Equal(input.Data.GetTitle(), post.Title)
 }
 
 func (suite *CreatePostRepositoryTestSuite) TearDownTest() {

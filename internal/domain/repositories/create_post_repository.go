@@ -1,9 +1,11 @@
 package repositories
 
-import "github.com/KelpGF/Go-Posts-API/internal/domain/models"
+import (
+	entities "github.com/KelpGF/Go-Posts-API/internal/domain/entities/post"
+)
 
 type CreatePostRepositoryInput struct {
-	Data *models.CreatePost
+	Data entities.Post
 }
 
 type CreatePostRepository interface {
