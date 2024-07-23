@@ -1,13 +1,9 @@
 package presentation
 
 import (
-	"encoding/json"
 	"net/http"
 
-	"github.com/KelpGF/Go-Posts-API/internal/application/usecases"
-	entities "github.com/KelpGF/Go-Posts-API/internal/domain/entities/post"
-	"github.com/KelpGF/Go-Posts-API/internal/domain/errors"
-	"github.com/KelpGF/Go-Posts-API/internal/infrastructure/repositories"
+	"github.com/KelpGF/Go-Posts-API/internal/presentation/factories"
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
 	httpSwagger "github.com/swaggo/http-swagger"
@@ -31,30 +27,7 @@ func createRouter(db *gorm.DB) *chi.Mux {
 }
 
 func mapperPostsRoutes(router *chi.Mux, db *gorm.DB) {
-	postRepository := repositories.NewCreatePostRepository(db)
-	postFactory := entities.NewPostFactory()
-	usecase := usecases.NewCreatePostUseCase(postRepository, postFactory)
-
-	router.Post("/post", func(w http.ResponseWriter, r *http.Request) {
-		var input usecases.CreatePostUseCaseInput
-
-		err := json.NewDecoder(r.Body).Decode(&input)
-		if err != nil {
-			errResponse := errors.NewErrorModel(nil, "Invalid request body")
-			w.WriteHeader(http.StatusBadRequest)
-			json.NewEncoder(w).Encode(errResponse)
-			return
-		}
-
-		output, errUseCase := usecase.Execute(&input)
-		if errUseCase != nil {
-			w.WriteHeader(http.StatusBadRequest)
-			json.NewEncoder(w).Encode(errUseCase)
-			return
-		}
-
-		w.WriteHeader(http.StatusCreated)
-		json.NewEncoder(w).Encode(output)
-	})
+	// create log decorator for handlers
+	router.Post("/post", factories.CreatePostHandler(db).Handle)
 
 }
