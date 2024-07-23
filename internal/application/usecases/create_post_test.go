@@ -34,7 +34,7 @@ func (suite *CreatePostUseCaseTestSuite) SetupTest() {
 	suite.createPostRepositoryStub = &CreatePostRepositoryMock{}
 	suite.sut = NewCreatePostUseCase(suite.createPostRepositoryStub)
 	suite.sutInput = &CreatePostUseCaseInput{
-		Data: models.CreatePost{
+		Data: &models.CreatePost{
 			Title:       "Title",
 			Body:        "Body",
 			AuthorName:  "AuthorName",

@@ -26,7 +26,7 @@ func (suite *CreatePostRepositoryTestSuite) SetupTest() {
 
 func (suite *CreatePostRepositoryTestSuite) TestCreatePostRepositoryCreate() {
 	input := &repositories.CreatePostRepositoryInput{
-		Data: models.CreatePost{
+		Data: &models.CreatePost{
 			Title:       "Hello World",
 			Body:        "This is a test post",
 			AuthorName:  "KelpGF",

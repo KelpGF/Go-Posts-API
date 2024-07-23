@@ -10,7 +10,7 @@ import (
 )
 
 type CreatePostUseCaseInput struct {
-	Data models.CreatePost
+	Data *models.CreatePost
 }
 
 type CreatePostUseCaseOutput struct {
