@@ -10,6 +10,7 @@ func main() {
 	config := configs.NewConfig()
 
 	db := infrastructure.StartDatabase(config)
+	defer infrastructure.CloseDatabase()
 
 	presentation.StartWebServer(db, config)
 }

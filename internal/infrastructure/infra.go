@@ -26,6 +26,18 @@ func StartDatabase(config *configs.ConfigType) *gorm.DB {
 	return dbConnection
 }
 
+func CloseDatabase() {
+	sqlDB, err := dbConnection.DB()
+	if err != nil {
+		log.Fatal("Failed to close database. \n", err)
+		os.Exit(2)
+	}
+
+	sqlDB.Close()
+
+	log.Println("Database connection closed")
+}
+
 func makeDSN(config *configs.ConfigType) string {
 	return fmt.Sprintf(
 		"host=%s user=%s password=%s dbname=%s port=%s sslmode=disable",
