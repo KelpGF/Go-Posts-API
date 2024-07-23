@@ -1,4 +1,4 @@
-package repository
+package repositories
 
 import (
 	"github.com/KelpGF/Go-Posts-API/internal/domain/repositories"
