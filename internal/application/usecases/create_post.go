@@ -2,23 +2,12 @@ package usecases
 
 import (
 	"fmt"
-	"time"
 
 	"github.com/KelpGF/Go-Posts-API/internal/domain/errors"
 	"github.com/KelpGF/Go-Posts-API/internal/domain/factories"
 	"github.com/KelpGF/Go-Posts-API/internal/domain/repositories"
+	"github.com/KelpGF/Go-Posts-API/internal/domain/usecases"
 )
-
-type CreatePostUseCaseInput struct {
-	Title       string    `json:"title"`
-	Body        string    `json:"body"`
-	AuthorName  string    `json:"author_name"`
-	PublishedAt time.Time `json:"published_at"`
-}
-
-type CreatePostUseCaseOutput struct {
-	ID string
-}
 
 type CreatePostUseCase struct {
 	CreatePostRepository repositories.CreatePostRepository
@@ -35,7 +24,7 @@ func NewCreatePostUseCase(
 	}
 }
 
-func (uc *CreatePostUseCase) Execute(input *CreatePostUseCaseInput) (*CreatePostUseCaseOutput, *errors.ErrorModel) {
+func (uc *CreatePostUseCase) Execute(input *usecases.CreatePostUseCaseInput) (*usecases.CreatePostUseCaseOutput, *errors.ErrorModel) {
 	post, err := uc.PostFactory.NewPost(
 		input.Title,
 		input.Body,
@@ -55,5 +44,5 @@ func (uc *CreatePostUseCase) Execute(input *CreatePostUseCaseInput) (*CreatePost
 		return nil, errors.NewErrorModel(nil, errorMessage)
 	}
 
-	return &CreatePostUseCaseOutput{ID: post.GetId()}, nil
+	return &usecases.CreatePostUseCaseOutput{ID: post.GetId()}, nil
 }
