@@ -8,6 +8,17 @@ import (
 	"github.com/KelpGF/Go-Posts-API/internal/domain/notification"
 )
 
+type Post interface {
+	GetId() string
+	GetTitle() string
+	GetBody() string
+	GetAuthorName() string
+	GetPublishedAt() time.Time
+	GetCreatedAt() time.Time
+	GetNotificationErrors() []error
+	HasErrors() bool
+}
+
 type post struct {
 	id          entities.ID
 	title       string
@@ -17,25 +28,6 @@ type post struct {
 	createdAt   time.Time
 
 	notification *notification.Notification
-}
-
-func NewPost(title string, body string, authorName string, publishedAt time.Time) (*post, *errors.ErrorModel) {
-	post := &post{
-		id:           entities.NewID(),
-		title:        title,
-		body:         body,
-		authorName:   authorName,
-		publishedAt:  publishedAt,
-		createdAt:    time.Now(),
-		notification: notification.NewNotification("Post"),
-	}
-
-	entityError := post.validate()
-	if entityError != nil {
-		return nil, entityError
-	}
-
-	return post, nil
 }
 
 func (p *post) GetId() string {
