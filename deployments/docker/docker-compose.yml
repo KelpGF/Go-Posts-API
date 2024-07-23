@@ -8,7 +8,8 @@ services:
     volumes:
       - ../../:/usr/src/app
     environment:
-      PORT: 3000
+      HTTP_HOST: 0.0.0.0
+      HTTP_PORT: 3000
       DB_NAME: posts_database
       DB_USER: post_user
       DB_PASSWORD: post_pass
