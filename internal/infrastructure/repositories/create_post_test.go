@@ -7,8 +7,8 @@ import (
 	"github.com/KelpGF/Go-Posts-API/internal/domain/models"
 	"github.com/KelpGF/Go-Posts-API/internal/domain/repositories"
 	"github.com/KelpGF/Go-Posts-API/internal/infrastructure/entities"
+	"github.com/KelpGF/Go-Posts-API/test/database"
 	"github.com/stretchr/testify/suite"
-	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 )
 
@@ -20,14 +20,7 @@ type CreatePostRepositoryTestSuite struct {
 }
 
 func (suite *CreatePostRepositoryTestSuite) SetupTest() {
-	db, err := gorm.Open(sqlite.Open("test.db"), &gorm.Config{})
-	if err != nil {
-		suite.T().Fatal(err)
-	}
-
-	db.AutoMigrate(&entities.Post{})
-
-	suite.db = db
+	suite.db = database.Setup()
 	suite.sut = NewCreatePostRepository(suite.db)
 }
 
