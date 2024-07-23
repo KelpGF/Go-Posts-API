@@ -1,15 +1,17 @@
 package errors
 
 type IsRequired struct {
-	Field string
+	Field   string `json:"-"`
+	Message string `json:"message"`
 }
 
 func NewIsRequiredError(field string) IsRequired {
 	return IsRequired{
-		Field: field,
+		Field:   field,
+		Message: field + " is required",
 	}
 }
 
 func (e IsRequired) Error() string {
-	return e.Field + " is required"
+	return e.Message
 }
