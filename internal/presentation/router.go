@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"github.com/KelpGF/Go-Posts-API/internal/presentation/factories"
+	"github.com/KelpGF/Go-Posts-API/internal/presentation/handlers"
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
 	httpSwagger "github.com/swaggo/http-swagger"
@@ -27,9 +28,8 @@ func createRouter(db *gorm.DB) *chi.Mux {
 }
 
 func mapperPostsRoutes(router *chi.Mux, db *gorm.DB) {
-	// create log decorator for handlers
 	router.Route("/post", func(r chi.Router) {
-		r.Post("/", factories.CreatePostHandler(db).Handle)
+		r.Post("/", handlers.NewLogDecoratorHandler(factories.CreatePostHandler(db)).Handle)
 		r.Delete("/{id}", factories.DeletePostHandler(db).Handle)
 	})
 }
