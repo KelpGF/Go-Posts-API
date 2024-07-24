@@ -145,7 +145,7 @@ func (suite *CreatePostUseCaseTestSuite) TestExecuteReturnSuccess() {
 	suite.createPostRepositoryStub.AssertExpectations(suite.T())
 }
 
-func TestSuite(t *testing.T) {
+func TestSuiteCreatePost(t *testing.T) {
 	suite.Run(t, new(CreatePostUseCaseTestSuite))
 }
 
