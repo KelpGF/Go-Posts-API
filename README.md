@@ -29,3 +29,12 @@ sh ./scripts/compose-up.sh
 ```bash
 sh ./scripts/compose-down.sh
 ```
+
+## Considerações
+
+- Utilizei o Gorm para facilitar a manipulação do banco de dados. Ele possui uma API muito boa, é bem documentado e também tem algumas funcionalidades padrões como Soft Delete e facilidade com Transactions.
+- Utilizei o Chi para facilitar a criação de rotas. Ele é um roteador HTTP leve e rápido.
+- Utilizei o Testify para facilitar a criação de testes. Ele é uma biblioteca que fornece algumas funções auxiliares para testes.
+- Não utilizei o Viper para configurações, pois não achei necessário para esse projeto. Utilizei variáveis de ambiente para configurações.
+- Normalmente crio uma camada entre o caso de uso e o handler http. Essa camada são as controller que possui assinaturas de funções únicas com tipos únicos HttpRequest e HttpResponse. Isso facilita a criação de testes unitários e também facilita caso seja necessário trocar o framework HTTP. Nesse projeto não criei essa camada, pois achei que não era necessário porém gostaria de informar essa prática.
+- Também crio uma camada chamada DAO entre a Repository e a instância direta do banco de dados. Mas também não achei necessário para esse projeto. Crio essa camada pois em alguns projetos os objetos de domínio tem estruturas diferentes das tabelas do banco de dados. Nesse caso, a camada Repository é responsável por converter os objetos de domínio um formato melhor para o banco de dados (e também o contrário) e a camada DAO é responsável por acessar o banco de dados.
