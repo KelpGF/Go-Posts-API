@@ -28,6 +28,8 @@ func createRouter(db *gorm.DB) *chi.Mux {
 
 func mapperPostsRoutes(router *chi.Mux, db *gorm.DB) {
 	// create log decorator for handlers
-	router.Post("/post", factories.CreatePostHandler(db).Handle)
-
+	router.Route("/post", func(r chi.Router) {
+		r.Post("/", factories.CreatePostHandler(db).Handle)
+		r.Delete("/{id}", factories.DeletePostHandler(db).Handle)
+	})
 }
