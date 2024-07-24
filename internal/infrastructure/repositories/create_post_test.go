@@ -43,6 +43,6 @@ func (suite *CreatePostRepositoryTestSuite) TearDownTest() {
 	database.Close(suite.db)
 }
 
-func TestSuite(t *testing.T) {
+func TestSuiteCreatePost(t *testing.T) {
 	suite.Run(t, new(CreatePostRepositoryTestSuite))
 }
