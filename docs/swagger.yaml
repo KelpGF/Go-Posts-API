@@ -1,0 +1,64 @@
+basePath: /
+definitions:
+  dto.CreatePostInput:
+    properties:
+      author_name:
+        type: string
+      body:
+        type: string
+      published_at:
+        type: string
+      title:
+        type: string
+    type: object
+  dto.CreatePostOutput:
+    properties:
+      id:
+        type: string
+    type: object
+  errors.ErrorModel:
+    properties:
+      errors:
+        items: {}
+        type: array
+      message:
+        type: string
+    type: object
+host: localhost:3000
+info:
+  contact:
+    email: kelvingomesdeveloper@gmail.com
+    name: Kelvin Gomes
+    url: https://www.linkedin.com/in/kelvin-gomes-fernandes
+  description: Posts API
+  termsOfService: http://swagger.io/terms/
+  title: Go Posts API
+  version: "1.0"
+paths:
+  /post:
+    post:
+      consumes:
+      - application/json
+      description: Create a new post
+      parameters:
+      - description: Post Request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.CreatePostInput'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/dto.CreatePostOutput'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errors.ErrorModel'
+      summary: Create a new post
+      tags:
+      - posts
+swagger: "2.0"
