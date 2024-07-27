@@ -24,6 +24,10 @@ func (suite *DeletePostRepositoryTestSuite) SetupTest() {
 	suite.sut = NewDeletePostRepository(suite.db)
 }
 
+func (suite *DeletePostRepositoryTestSuite) TearDownTest() {
+	database.Close(suite.db)
+}
+
 func (suite *DeletePostRepositoryTestSuite) TestDeletePostRepositoryDelete() {
 	input := &dto.DeletePostInput{
 		ID: uuid.New().String(),

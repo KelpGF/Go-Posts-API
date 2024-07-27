@@ -24,6 +24,10 @@ func (suite *ListPostsRepositoryTestSuite) SetupTest() {
 	suite.repository = NewListPostsRepository(suite.db)
 }
 
+func (suite *ListPostsRepositoryTestSuite) TearDownTest() {
+	database.Close(suite.db)
+}
+
 func (suite *ListPostsRepositoryTestSuite) TestListPostsRepositoryListByAuthorAsc() {
 	posts := makePosts()
 	insertPosts(suite.db, posts)
