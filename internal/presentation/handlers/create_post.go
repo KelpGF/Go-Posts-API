@@ -18,6 +18,16 @@ func NewCreatePostHandler(createPostUseCase usecases.CreatePostUseCase) *CreateP
 	return &CreatePostHandler{createPostUseCase: createPostUseCase}
 }
 
+// Create Post godoc
+// @Summary 		Create a new post
+// @Description Create a new post
+// @Tags 				posts
+// @Accept 			json
+// @Produce 		json
+// @Param 			request	body dto.CreatePostInput true "Post Request"
+// @Success 		201 {object} dto.CreatePostOutput
+// @Failure 		400 {object} errors.ErrorModel
+// @Router 			/post [post]
 func (h *CreatePostHandler) Handle(w http.ResponseWriter, r *http.Request) {
 	var input dto.CreatePostInput
 

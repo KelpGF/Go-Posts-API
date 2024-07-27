@@ -61,4 +61,28 @@ paths:
       summary: Create a new post
       tags:
       - posts
+  /post/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete post by id
+      parameters:
+      - description: Post ID
+        format: uuid
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errors.ErrorModel'
+      summary: Delete post
+      tags:
+      - posts
 swagger: "2.0"

@@ -17,6 +17,16 @@ func NewDeletePostHandler(deletePostUseCase usecases.DeletePostUseCase) *DeleteP
 	return &DeletePostHandler{deletePostUseCase: deletePostUseCase}
 }
 
+// Delete Post godoc
+// @Summary 		Delete post
+// @Description Delete post by id
+// @Tags 				posts
+// @Accept 			json
+// @Produce 		json
+// @Param 			id	path string	true	"Post ID" format(uuid)
+// @Success 		200
+// @Failure 		400 {object} errors.ErrorModel
+// @Router 			/post/{id} [delete]
 func (h *DeletePostHandler) Handle(w http.ResponseWriter, r *http.Request) {
 	input := &dto.DeletePostInput{
 		ID: chi.URLParam(r, "id"),
