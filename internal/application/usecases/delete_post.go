@@ -17,11 +17,7 @@ func NewDeletePostUseCase(deletePostRepository repositories.DeletePostRepository
 }
 
 func (uc *DeletePostUseCase) Execute(input *dto.DeletePostInput) *errors.ErrorModel {
-	deletePostRepositoryInput := &repositories.DeletePostRepositoryInput{
-		ID: input.ID,
-	}
-
-	err := uc.deletePostRepository.Delete(deletePostRepositoryInput)
+	err := uc.deletePostRepository.Delete(input)
 	if err != nil {
 		return errors.NewErrorModel(nil, "We couldn't delete the post! Check if the ID is correct.")
 	}

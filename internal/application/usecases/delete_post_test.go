@@ -6,7 +6,6 @@ import (
 
 	"github.com/KelpGF/Go-Posts-API/internal/domain/dto"
 	domainErrors "github.com/KelpGF/Go-Posts-API/internal/domain/errors"
-	"github.com/KelpGF/Go-Posts-API/internal/domain/repositories"
 	"github.com/stretchr/testify/mock"
 	"github.com/stretchr/testify/suite"
 )
@@ -35,9 +34,7 @@ func (suite *DeletePostUseCaseTestSuite) TestExecuteReturnErrorWhenDeletePostRep
 
 	suite.deletePostRepositoryStub.On(
 		"Delete",
-		&repositories.DeletePostRepositoryInput{
-			ID: input.ID,
-		},
+		input,
 	).Return(
 		errors.New("Error"),
 	)
@@ -55,9 +52,7 @@ func (suite *DeletePostUseCaseTestSuite) TestExecuteReturnNilWhenDeletePostRepos
 
 	suite.deletePostRepositoryStub.On(
 		"Delete",
-		&repositories.DeletePostRepositoryInput{
-			ID: input.ID,
-		},
+		input,
 	).Return(
 		nil,
 	)
@@ -75,7 +70,7 @@ type DeletePostRepositoryMock struct {
 	mock.Mock
 }
 
-func (m *DeletePostRepositoryMock) Delete(input *repositories.DeletePostRepositoryInput) error {
+func (m *DeletePostRepositoryMock) Delete(input *dto.DeletePostInput) error {
 	args := m.Called(input)
 	return args.Error(0)
 }

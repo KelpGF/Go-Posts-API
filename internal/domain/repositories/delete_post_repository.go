@@ -1,9 +1,7 @@
 package repositories
 
-type DeletePostRepositoryInput struct {
-	ID string
-}
+import "github.com/KelpGF/Go-Posts-API/internal/domain/dto"
 
 type DeletePostRepository interface {
-	Delete(input *DeletePostRepositoryInput) error
+	Delete(input *dto.DeletePostInput) error
 }

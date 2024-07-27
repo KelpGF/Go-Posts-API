@@ -4,7 +4,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/KelpGF/Go-Posts-API/internal/domain/repositories"
+	"github.com/KelpGF/Go-Posts-API/internal/domain/dto"
 	"github.com/KelpGF/Go-Posts-API/internal/infrastructure/entities"
 	"github.com/KelpGF/Go-Posts-API/test/database"
 	"github.com/google/uuid"
@@ -25,7 +25,7 @@ func (suite *DeletePostRepositoryTestSuite) SetupTest() {
 }
 
 func (suite *DeletePostRepositoryTestSuite) TestDeletePostRepositoryDelete() {
-	input := &repositories.DeletePostRepositoryInput{
+	input := &dto.DeletePostInput{
 		ID: uuid.New().String(),
 	}
 

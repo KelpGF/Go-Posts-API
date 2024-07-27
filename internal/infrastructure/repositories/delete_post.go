@@ -1,7 +1,7 @@
 package repositories
 
 import (
-	"github.com/KelpGF/Go-Posts-API/internal/domain/repositories"
+	"github.com/KelpGF/Go-Posts-API/internal/domain/dto"
 	"github.com/KelpGF/Go-Posts-API/internal/infrastructure/entities"
 	"gorm.io/gorm"
 )
@@ -16,7 +16,7 @@ func NewDeletePostRepository(db *gorm.DB) *DeletePostRepository {
 	}
 }
 
-func (r *DeletePostRepository) Delete(input *repositories.DeletePostRepositoryInput) error {
+func (r *DeletePostRepository) Delete(input *dto.DeletePostInput) error {
 	err := r.db.Where("id = ?", input.ID).Delete(&entities.Post{}).Error
 
 	return err
