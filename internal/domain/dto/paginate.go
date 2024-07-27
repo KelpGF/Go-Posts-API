@@ -20,5 +20,5 @@ func (p *Paginate) GetPage() int {
 }
 
 func (p *Paginate) Offset() int {
-	return (p.Page - 1) * p.Limit
+	return (p.GetPage() - 1) * p.Limit
 }

@@ -5,5 +5,5 @@ import (
 )
 
 type ListPostsUseCase interface {
-	Execute(dto.ListPostsInput) *dto.ListPostsOutput
+	Execute(*dto.ListPostsInput) *dto.ListPostsOutput
 }
