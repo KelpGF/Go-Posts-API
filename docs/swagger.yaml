@@ -16,6 +16,26 @@ definitions:
       id:
         type: string
     type: object
+  dto.ListPostsOutput:
+    properties:
+      posts:
+        items:
+          $ref: '#/definitions/dto.Post'
+        type: array
+    type: object
+  dto.Post:
+    properties:
+      author_name:
+        type: string
+      body:
+        type: string
+      id:
+        type: string
+      published_at:
+        type: string
+      title:
+        type: string
+    type: object
   errors.ErrorModel:
     properties:
       errors:
@@ -36,6 +56,42 @@ info:
   version: "1.0"
 paths:
   /post:
+    get:
+      consumes:
+      - application/json
+      description: List Posts by pagination
+      parameters:
+      - description: Page Number
+        in: query
+        name: page
+        type: integer
+      - description: Limit of posts
+        in: query
+        name: limit
+        type: integer
+      - description: Sort by
+        enum:
+        - asc
+        - desc
+        in: query
+        name: sort
+        type: string
+      - description: Author Name
+        in: query
+        name: author_name
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/dto.ListPostsOutput'
+            type: array
+      summary: List Posts by pagination
+      tags:
+      - posts
     post:
       consumes:
       - application/json
