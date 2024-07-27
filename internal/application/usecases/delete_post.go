@@ -1,9 +1,9 @@
 package usecases
 
 import (
+	"github.com/KelpGF/Go-Posts-API/internal/domain/dto"
 	"github.com/KelpGF/Go-Posts-API/internal/domain/errors"
 	"github.com/KelpGF/Go-Posts-API/internal/domain/repositories"
-	"github.com/KelpGF/Go-Posts-API/internal/domain/usecases"
 )
 
 type DeletePostUseCase struct {
@@ -16,7 +16,7 @@ func NewDeletePostUseCase(deletePostRepository repositories.DeletePostRepository
 	}
 }
 
-func (uc *DeletePostUseCase) Execute(input *usecases.DeletePostUseCaseInput) *errors.ErrorModel {
+func (uc *DeletePostUseCase) Execute(input *dto.DeletePostInput) *errors.ErrorModel {
 	deletePostRepositoryInput := &repositories.DeletePostRepositoryInput{
 		ID: input.ID,
 	}

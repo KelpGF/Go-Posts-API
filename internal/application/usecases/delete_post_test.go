@@ -4,9 +4,9 @@ import (
 	"errors"
 	"testing"
 
+	"github.com/KelpGF/Go-Posts-API/internal/domain/dto"
 	domainErrors "github.com/KelpGF/Go-Posts-API/internal/domain/errors"
 	"github.com/KelpGF/Go-Posts-API/internal/domain/repositories"
-	"github.com/KelpGF/Go-Posts-API/internal/domain/usecases"
 	"github.com/stretchr/testify/mock"
 	"github.com/stretchr/testify/suite"
 )
@@ -15,12 +15,12 @@ type DeletePostUseCaseTestSuite struct {
 	suite.Suite
 
 	sut                      *DeletePostUseCase
-	sutInput                 *usecases.DeletePostUseCaseInput
+	sutInput                 *dto.DeletePostInput
 	deletePostRepositoryStub *DeletePostRepositoryMock
 }
 
 func (suite *DeletePostUseCaseTestSuite) SetupTest() {
-	suite.sutInput = &usecases.DeletePostUseCaseInput{
+	suite.sutInput = &dto.DeletePostInput{
 		ID: "ID",
 	}
 	suite.deletePostRepositoryStub = &DeletePostRepositoryMock{}

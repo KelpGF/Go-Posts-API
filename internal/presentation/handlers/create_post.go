@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"net/http"
 
+	"github.com/KelpGF/Go-Posts-API/internal/domain/dto"
 	"github.com/KelpGF/Go-Posts-API/internal/domain/errors"
 	"github.com/KelpGF/Go-Posts-API/internal/domain/usecases"
 )
@@ -18,7 +19,7 @@ func NewCreatePostHandler(createPostUseCase usecases.CreatePostUseCase) *CreateP
 }
 
 func (h *CreatePostHandler) Handle(w http.ResponseWriter, r *http.Request) {
-	var input usecases.CreatePostUseCaseInput
+	var input dto.CreatePostInput
 
 	err := json.NewDecoder(r.Body).Decode(&input)
 	if err != nil {

@@ -3,10 +3,10 @@ package usecases
 import (
 	"fmt"
 
+	"github.com/KelpGF/Go-Posts-API/internal/domain/dto"
 	"github.com/KelpGF/Go-Posts-API/internal/domain/errors"
 	"github.com/KelpGF/Go-Posts-API/internal/domain/factories"
 	"github.com/KelpGF/Go-Posts-API/internal/domain/repositories"
-	"github.com/KelpGF/Go-Posts-API/internal/domain/usecases"
 )
 
 type CreatePostUseCase struct {
@@ -24,7 +24,7 @@ func NewCreatePostUseCase(
 	}
 }
 
-func (uc *CreatePostUseCase) Execute(input *usecases.CreatePostUseCaseInput) (*usecases.CreatePostUseCaseOutput, *errors.ErrorModel) {
+func (uc *CreatePostUseCase) Execute(input *dto.CreatePostInput) (*dto.CreatePostOutput, *errors.ErrorModel) {
 	post, err := uc.PostFactory.NewPost(
 		input.Title,
 		input.Body,
@@ -44,5 +44,5 @@ func (uc *CreatePostUseCase) Execute(input *usecases.CreatePostUseCaseInput) (*u
 		return nil, errors.NewErrorModel(nil, errorMessage)
 	}
 
-	return &usecases.CreatePostUseCaseOutput{ID: post.GetId()}, nil
+	return &dto.CreatePostOutput{ID: post.GetId()}, nil
 }

@@ -5,10 +5,10 @@ import (
 	"testing"
 	"time"
 
+	"github.com/KelpGF/Go-Posts-API/internal/domain/dto"
 	entities "github.com/KelpGF/Go-Posts-API/internal/domain/entities/post"
 	domainErrors "github.com/KelpGF/Go-Posts-API/internal/domain/errors"
 	"github.com/KelpGF/Go-Posts-API/internal/domain/repositories"
-	"github.com/KelpGF/Go-Posts-API/internal/domain/usecases"
 	"github.com/KelpGF/Go-Posts-API/test/database/post"
 	"github.com/stretchr/testify/mock"
 	"github.com/stretchr/testify/suite"
@@ -20,7 +20,7 @@ type CreatePostUseCaseTestSuite struct {
 	suite.Suite
 
 	sut                      *CreatePostUseCase
-	sutInput                 *usecases.CreatePostUseCaseInput
+	sutInput                 *dto.CreatePostInput
 	createPostRepositoryStub *CreatePostRepositoryMock
 	postFactoryStub          *MockPostFactory
 }
@@ -34,7 +34,7 @@ func (suite *CreatePostUseCaseTestSuite) SetupTest() {
 		suite.postFactoryStub,
 	)
 
-	suite.sutInput = &usecases.CreatePostUseCaseInput{
+	suite.sutInput = &dto.CreatePostInput{
 		Title:       "Title",
 		Body:        "Body",
 		AuthorName:  "AuthorName",
