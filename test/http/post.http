@@ -10,4 +10,8 @@ Content-Type: application/json
 
 ###
 
+GET http://localhost:3000/post HTTP/1.1
+
+###
+
 DELETE http://localhost:3000/post/23e98c6a-9c06-4cdc-af6d-9b7f306407af HTTP/1.1
