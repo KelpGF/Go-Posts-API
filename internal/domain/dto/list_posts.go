@@ -15,5 +15,5 @@ type ListPostsInput struct {
 }
 
 type ListPostsOutput struct {
-	Posts []Post
+	Posts []Post `json:"posts"`
 }
