@@ -43,21 +43,32 @@ func (p *MockPost) GetCreatedAt() time.Time {
 }
 
 func (p *MockPost) GetNotificationErrors() []error {
-	return nil
+	args := p.Called()
+	return args.Get(0).([]error)
 }
 
 func (p *MockPost) HasErrors() bool {
-	return false
+	args := p.Called()
+	return args.Bool(0)
 }
 
 func (p *MockPost) GetNotificationErrorMessage() string {
-	return ""
+	args := p.Called()
+	return args.String(0)
 }
 
-func (p *MockPost) SetTitle(title string) {}
+func (p *MockPost) SetTitle(title string) {
+	p.Called(title)
+}
 
-func (p *MockPost) SetBody(body string) {}
+func (p *MockPost) SetBody(body string) {
+	p.Called(body)
+}
 
-func (p *MockPost) SetAuthorName(authorName string) {}
+func (p *MockPost) SetAuthorName(authorName string) {
+	p.Called(authorName)
+}
 
-func (p *MockPost) SetPublishedAt(publishedAt time.Time) {}
+func (p *MockPost) SetPublishedAt(publishedAt time.Time) {
+	p.Called(publishedAt)
+}
