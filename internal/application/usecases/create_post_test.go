@@ -9,7 +9,7 @@ import (
 	entities "github.com/KelpGF/Go-Posts-API/internal/domain/entities/post"
 	domainErrors "github.com/KelpGF/Go-Posts-API/internal/domain/errors"
 	"github.com/KelpGF/Go-Posts-API/internal/domain/repositories"
-	"github.com/KelpGF/Go-Posts-API/test/database/post"
+	internalMock "github.com/KelpGF/Go-Posts-API/test/database/mock"
 	"github.com/stretchr/testify/mock"
 	"github.com/stretchr/testify/suite"
 )
@@ -54,7 +54,7 @@ func (suite *CreatePostUseCaseTestSuite) TestExecuteReturnErrorWhenPostIsInvalid
 		input.AuthorName,
 		input.PublishedAt,
 	).Return(
-		post.NewMockPost(),
+		internalMock.NewMockPost(),
 		&domainErrors.ErrorModel{
 			Message: "Post: Title is required, Body is required",
 			Errors: []error{
@@ -83,7 +83,7 @@ func (suite *CreatePostUseCaseTestSuite) TestExecuteReturnErrorWhenPostIsInvalid
 
 func (suite *CreatePostUseCaseTestSuite) TestExecuteReturnErrorWhenRepositoryFails() {
 	input := suite.sutInput
-	mockPost := post.NewMockPost()
+	mockPost := internalMock.NewMockPost()
 
 	suite.postFactoryStub.On(
 		"NewPost",
@@ -116,7 +116,7 @@ func (suite *CreatePostUseCaseTestSuite) TestExecuteReturnErrorWhenRepositoryFai
 
 func (suite *CreatePostUseCaseTestSuite) TestExecuteReturnSuccess() {
 	input := suite.sutInput
-	mockPost := post.NewMockPost()
+	mockPost := internalMock.NewMockPost()
 
 	suite.postFactoryStub.On(
 		"NewPost",

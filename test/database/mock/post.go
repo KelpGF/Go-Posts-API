@@ -1,12 +1,14 @@
-package post
+package mock
 
 import (
 	"time"
 
 	"github.com/google/uuid"
+	"github.com/stretchr/testify/mock"
 )
 
 type MockPost struct {
+	mock.Mock
 	ID uuid.UUID
 }
 

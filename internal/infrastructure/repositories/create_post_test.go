@@ -6,7 +6,7 @@ import (
 	"github.com/KelpGF/Go-Posts-API/internal/domain/repositories"
 	"github.com/KelpGF/Go-Posts-API/internal/infrastructure/entities"
 	"github.com/KelpGF/Go-Posts-API/test/database"
-	"github.com/KelpGF/Go-Posts-API/test/database/post"
+	internalMock "github.com/KelpGF/Go-Posts-API/test/database/mock"
 	"github.com/stretchr/testify/suite"
 	"gorm.io/gorm"
 )
@@ -25,7 +25,7 @@ func (suite *CreatePostRepositoryTestSuite) SetupTest() {
 
 func (suite *CreatePostRepositoryTestSuite) TestCreatePostRepositoryCreate() {
 	input := &repositories.CreatePostRepositoryInput{
-		Data: post.NewMockPost(),
+		Data: internalMock.NewMockPost(),
 	}
 
 	err := suite.sut.Create(input)
