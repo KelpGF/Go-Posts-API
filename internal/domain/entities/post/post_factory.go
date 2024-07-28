@@ -32,3 +32,15 @@ func (f PostFactoryImpl) NewPost(title string, body string, authorName string, p
 
 	return post, nil
 }
+
+func (f PostFactoryImpl) Restore(id string, title string, body string, authorName string, publishedAt time.Time) Post {
+	uuId, _ := entities.ParseID(id)
+
+	return &post{
+		id:          uuId,
+		title:       title,
+		body:        body,
+		authorName:  authorName,
+		publishedAt: publishedAt,
+	}
+}

@@ -10,3 +10,7 @@ import (
 type PostFactory interface {
 	NewPost(title string, body string, authorName string, publishedAt time.Time) (entities.Post, *errors.ErrorModel)
 }
+
+type RestorePostFactory interface {
+	Restore(id string, title string, body string, authorName string, publishedAt time.Time) entities.Post
+}
