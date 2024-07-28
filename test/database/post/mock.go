@@ -47,3 +47,15 @@ func (p *MockPost) GetNotificationErrors() []error {
 func (p *MockPost) HasErrors() bool {
 	return false
 }
+
+func (p *MockPost) GetNotificationErrorMessage() string {
+	return ""
+}
+
+func (p *MockPost) SetTitle(title string) {}
+
+func (p *MockPost) SetBody(body string) {}
+
+func (p *MockPost) SetAuthorName(authorName string) {}
+
+func (p *MockPost) SetPublishedAt(publishedAt time.Time) {}
