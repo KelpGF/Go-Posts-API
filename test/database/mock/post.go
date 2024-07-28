@@ -3,8 +3,10 @@ package mock
 import (
 	"time"
 
+	"github.com/KelpGF/Go-Posts-API/internal/infrastructure/entities"
 	"github.com/google/uuid"
 	"github.com/stretchr/testify/mock"
+	"gorm.io/gorm"
 )
 
 type MockPost struct {
@@ -19,7 +21,8 @@ func NewMockPost() *MockPost {
 }
 
 func (p *MockPost) GetId() string {
-	return p.ID.String()
+	args := p.Called()
+	return args.String(0)
 }
 
 func (p *MockPost) GetTitle() string {
@@ -71,4 +74,45 @@ func (p *MockPost) SetAuthorName(authorName string) {
 
 func (p *MockPost) SetPublishedAt(publishedAt time.Time) {
 	p.Called(publishedAt)
+}
+
+func InsertPosts(db *gorm.DB, posts []entities.Post) {
+	for _, post := range posts {
+		db.Create(&post)
+	}
+}
+
+func DeletePosts(db *gorm.DB, posts []entities.Post) {
+	for _, post := range posts {
+		db.Delete(&post)
+	}
+}
+
+func MakePosts() []entities.Post {
+	return []entities.Post{
+		{
+			ID:          uuid.New().String(),
+			Title:       "title1-a1",
+			AuthorName:  "author1",
+			Body:        "body",
+			PublishedAt: time.Now().Add(-time.Hour * 2),
+			CreatedAt:   time.Now(),
+		},
+		{
+			ID:          uuid.New().String(),
+			Title:       "title2-a1",
+			AuthorName:  "author1",
+			Body:        "body",
+			PublishedAt: time.Now().Add(-time.Hour),
+			CreatedAt:   time.Now(),
+		},
+		{
+			ID:          uuid.New().String(),
+			Title:       "title",
+			AuthorName:  "author",
+			Body:        "body",
+			PublishedAt: time.Now(),
+			CreatedAt:   time.Now(),
+		},
+	}
 }

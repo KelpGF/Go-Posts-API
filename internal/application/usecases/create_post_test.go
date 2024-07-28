@@ -117,6 +117,7 @@ func (suite *CreatePostUseCaseTestSuite) TestExecuteReturnErrorWhenRepositoryFai
 func (suite *CreatePostUseCaseTestSuite) TestExecuteReturnSuccess() {
 	input := suite.sutInput
 	mockPost := internalMock.NewMockPost()
+	mockPost.On("GetId").Return("1")
 
 	suite.postFactoryStub.On(
 		"NewPost",

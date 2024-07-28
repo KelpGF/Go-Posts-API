@@ -2,12 +2,10 @@ package repositories
 
 import (
 	"testing"
-	"time"
 
 	"github.com/KelpGF/Go-Posts-API/internal/domain/dto"
-	"github.com/KelpGF/Go-Posts-API/internal/infrastructure/entities"
 	"github.com/KelpGF/Go-Posts-API/test/database"
-	"github.com/google/uuid"
+	"github.com/KelpGF/Go-Posts-API/test/database/mock"
 	"github.com/stretchr/testify/suite"
 	"gorm.io/gorm"
 )
@@ -29,9 +27,9 @@ func (suite *ListPostsRepositoryTestSuite) TearDownTest() {
 }
 
 func (suite *ListPostsRepositoryTestSuite) TestListPostsRepositoryListByAuthorAsc() {
-	posts := makePosts()
-	insertPosts(suite.db, posts)
-	defer deletePosts(suite.db, posts)
+	posts := mock.MakePosts()
+	mock.InsertPosts(suite.db, posts)
+	defer mock.DeletePosts(suite.db, posts)
 
 	input := &dto.ListPostsInput{
 		AuthorName:    "author1",
@@ -47,9 +45,9 @@ func (suite *ListPostsRepositoryTestSuite) TestListPostsRepositoryListByAuthorAs
 }
 
 func (suite *ListPostsRepositoryTestSuite) TestListPostsRepositoryListByAuthorDesc() {
-	posts := makePosts()
-	insertPosts(suite.db, posts)
-	defer deletePosts(suite.db, posts)
+	posts := mock.MakePosts()
+	mock.InsertPosts(suite.db, posts)
+	defer mock.DeletePosts(suite.db, posts)
 
 	input := &dto.ListPostsInput{
 		AuthorName:    "author1",
@@ -65,9 +63,9 @@ func (suite *ListPostsRepositoryTestSuite) TestListPostsRepositoryListByAuthorDe
 }
 
 func (suite *ListPostsRepositoryTestSuite) TestListPostsRepositoryListByAuthorName() {
-	posts := makePosts()
-	insertPosts(suite.db, posts)
-	defer deletePosts(suite.db, posts)
+	posts := mock.MakePosts()
+	mock.InsertPosts(suite.db, posts)
+	defer mock.DeletePosts(suite.db, posts)
 
 	input := &dto.ListPostsInput{
 		AuthorName:    "author",
@@ -81,9 +79,9 @@ func (suite *ListPostsRepositoryTestSuite) TestListPostsRepositoryListByAuthorNa
 }
 
 func (suite *ListPostsRepositoryTestSuite) TestListPostsRepositoryListByPaginate() {
-	posts := makePosts()
-	insertPosts(suite.db, posts)
-	defer deletePosts(suite.db, posts)
+	posts := mock.MakePosts()
+	mock.InsertPosts(suite.db, posts)
+	defer mock.DeletePosts(suite.db, posts)
 
 	input := &dto.ListPostsInput{
 		AuthorName:    "author",
@@ -99,45 +97,4 @@ func (suite *ListPostsRepositoryTestSuite) TestListPostsRepositoryListByPaginate
 
 func TestSuiteListPosts(t *testing.T) {
 	suite.Run(t, new(ListPostsRepositoryTestSuite))
-}
-
-func insertPosts(db *gorm.DB, posts []entities.Post) {
-	for _, post := range posts {
-		db.Create(&post)
-	}
-}
-
-func deletePosts(db *gorm.DB, posts []entities.Post) {
-	for _, post := range posts {
-		db.Delete(&post)
-	}
-}
-
-func makePosts() []entities.Post {
-	return []entities.Post{
-		{
-			ID:          uuid.New().String(),
-			Title:       "title1-a1",
-			AuthorName:  "author1",
-			Body:        "body",
-			PublishedAt: time.Now().Add(-time.Hour * 2),
-			CreatedAt:   time.Now(),
-		},
-		{
-			ID:          uuid.New().String(),
-			Title:       "title2-a1",
-			AuthorName:  "author1",
-			Body:        "body",
-			PublishedAt: time.Now().Add(-time.Hour),
-			CreatedAt:   time.Now(),
-		},
-		{
-			ID:          uuid.New().String(),
-			Title:       "title",
-			AuthorName:  "author",
-			Body:        "body",
-			PublishedAt: time.Now(),
-			CreatedAt:   time.Now(),
-		},
-	}
 }
