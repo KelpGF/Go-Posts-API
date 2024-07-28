@@ -12,5 +12,5 @@ type PostFactory interface {
 }
 
 type RestorePostFactory interface {
-	Restore(id string, title string, body string, authorName string, publishedAt time.Time) entities.Post
+	Restore(id string, title string, body string, authorName string, publishedAt time.Time, createdAt time.Time) entities.Post
 }

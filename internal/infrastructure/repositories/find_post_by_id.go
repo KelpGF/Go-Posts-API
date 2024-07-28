@@ -40,6 +40,7 @@ func (r *FindPostByIdRepository) FindById(input *entityId.ID) (entityPost.Post, 
 		post.Body,
 		post.AuthorName,
 		post.PublishedAt.Local(),
+		post.CreatedAt.Local(),
 	)
 
 	return restoredPost, nil

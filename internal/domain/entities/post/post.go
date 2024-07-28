@@ -91,7 +91,7 @@ func (p *post) validate() *errors.ErrorModel {
 		p.notification.AddError(err)
 	}
 
-	if p.notification.HasErrors() {
+	if p.HasErrors() {
 		return errors.NewErrorModel(p.GetNotificationErrors(), p.GetNotificationErrorMessage())
 	}
 

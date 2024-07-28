@@ -53,7 +53,7 @@ func (suite *FindPostByIdRepositoryTestSuite) TestFindPostByIdRepositoryFindById
 
 	mockPost := internalMock.NewMockPost()
 	mockPost.On("GetId").Return(post.ID)
-	suite.postFactoryStub.On("Restore", post.ID, post.Title, post.Body, post.AuthorName, post.PublishedAt.Local()).Return(mockPost)
+	suite.postFactoryStub.On("Restore", post.ID, post.Title, post.Body, post.AuthorName, post.PublishedAt.Local(), post.CreatedAt.Local()).Return(mockPost)
 
 	postId, _ := entities.ParseID(post.ID)
 	foundPost, err := suite.sut.FindById(&postId)
@@ -83,7 +83,8 @@ func (f *RestorePostFactoryStub) Restore(
 	body string,
 	authorName string,
 	publishedAt time.Time,
+	createdAt time.Time,
 ) entityPost.Post {
-	args := f.Called(id, title, body, authorName, publishedAt)
+	args := f.Called(id, title, body, authorName, publishedAt, createdAt)
 	return args.Get(0).(entityPost.Post)
 }
