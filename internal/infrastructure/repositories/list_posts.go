@@ -19,6 +19,8 @@ func (r *ListPostsRepository) List(input *dto.ListPostsInput) *dto.ListPostsOutp
 	var posts []dto.Post
 	query := r.db.Table("posts")
 
+	query.Where("deleted_at IS NULL")
+
 	if input.AuthorName != "" {
 		query.Where("author_name LIKE ?", "%"+input.AuthorName+"%")
 	}
