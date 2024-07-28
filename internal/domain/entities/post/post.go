@@ -15,8 +15,15 @@ type Post interface {
 	GetAuthorName() string
 	GetPublishedAt() time.Time
 	GetCreatedAt() time.Time
+
+	GetNotificationErrorMessage() string
 	GetNotificationErrors() []error
 	HasErrors() bool
+
+	SetTitle(title string)
+	SetBody(body string)
+	SetAuthorName(authorName string)
+	SetPublishedAt(publishedAt time.Time)
 }
 
 type post struct {
@@ -58,11 +65,17 @@ func (p *post) GetNotificationErrors() []error {
 	return p.notification.GetErrors()
 }
 
+func (p *post) GetNotificationErrorMessage() string {
+	return p.notification.GetErrorsMessage()
+}
+
 func (p *post) HasErrors() bool {
 	return p.notification.HasErrors()
 }
 
 func (p *post) validate() *errors.ErrorModel {
+	p.notification.ClearErrors()
+
 	if p.title == "" {
 		err := errors.NewIsRequiredError("Title")
 		p.notification.AddError(err)
@@ -79,8 +92,28 @@ func (p *post) validate() *errors.ErrorModel {
 	}
 
 	if p.notification.HasErrors() {
-		return errors.NewErrorModel(p.notification.GetErrors(), p.notification.GetErrorsMessage())
+		return errors.NewErrorModel(p.GetNotificationErrors(), p.GetNotificationErrorMessage())
 	}
 
 	return nil
+}
+
+func (p *post) SetTitle(title string) {
+	p.title = title
+	p.validate()
+}
+
+func (p *post) SetBody(body string) {
+	p.body = body
+	p.validate()
+}
+
+func (p *post) SetAuthorName(authorName string) {
+	p.authorName = authorName
+	p.validate()
+}
+
+func (p *post) SetPublishedAt(publishedAt time.Time) {
+	p.publishedAt = publishedAt
+	p.validate()
 }
