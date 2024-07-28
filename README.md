@@ -32,6 +32,16 @@ sh scripts/start-dev.sh
 sh scripts/stop-dev.sh
 ```
 
+### Production
+
+```bash
+sh scripts/start.sh
+```
+
+```bash
+sh scripts/stop.sh
+```
+
 ## Considerações
 
 - Utilizei o Gorm para facilitar a manipulação do banco de dados. Ele possui uma API muito boa, é bem documentado e também tem algumas funcionalidades padrões como Soft Delete e facilidade com Transactions.

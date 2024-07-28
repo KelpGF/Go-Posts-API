@@ -1,0 +1,40 @@
+services:
+  go_api:
+    build: 
+      context: ../../
+      dockerfile: build/package/Dockerfile
+    container_name: prod_go-posts-api
+    restart: always
+    depends_on:
+      go_db:
+        condition: service_healthy
+    environment:
+      HTTP_HOST: 0.0.0.0
+      HTTP_PORT: 3000
+      DB_NAME: posts
+      DB_USER: RAND_USER
+      DB_PASSWORD: RAND_PASS
+      DB_HOST: prod_go-posts-db
+      DB_PORT: 5432
+    ports:
+      - 3000:3000
+  go_db:
+    image: postgres:alpine
+    container_name: prod_go-posts-db
+    environment:
+      POSTGRES_USER: RAND_USER
+      POSTGRES_PASSWORD: RAND_PASS
+      POSTGRES_DB: posts
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready"]
+      interval: 5s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-db:/var/lib/postgresql/data
+
+volumes:
+  postgres-db:
