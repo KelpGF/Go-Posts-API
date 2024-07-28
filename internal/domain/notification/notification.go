@@ -8,6 +8,7 @@ type Notification struct {
 func NewNotification(context string) *Notification {
 	return &Notification{
 		context: context,
+		errors:  []error{},
 	}
 }
 
