@@ -6,5 +6,5 @@ import (
 )
 
 type FindPostByIdRepository interface {
-	FindById(input *entities.ID) entityPost.Post
+	FindById(input *entities.ID) (entityPost.Post, error)
 }
