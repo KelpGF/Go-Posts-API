@@ -18,6 +18,9 @@ services:
       DB_PORT: 5432
     ports:
       - 3000:3000
+    networks:
+      - prod_go
+
   go_db:
     image: postgres:alpine
     container_name: prod_go-posts-db
@@ -31,10 +34,14 @@ services:
       timeout: 5s
       retries: 3
       start_period: 10s
-    ports:
-      - "5432:5432"
     volumes:
-      - postgres-db:/var/lib/postgresql/data
+      - prod_postgres-db:/var/lib/postgresql/data
+    networks:
+      - prod_go
 
 volumes:
-  postgres-db:
+  prod_postgres-db:
+
+networks:
+  prod_go:
+    driver: bridge

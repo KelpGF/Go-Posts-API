@@ -9,14 +9,17 @@ services:
       - ../../:/usr/src/app
     environment:
       HTTP_HOST: 0.0.0.0
-      HTTP_PORT: 3000
+      HTTP_PORT: 4000
       DB_NAME: posts_database
       DB_USER: post_user
       DB_PASSWORD: post_pass
       DB_HOST: go-posts-db
       DB_PORT: 5432
     ports:
-      - 3000:3000
+      - 80:4000
+    networks:
+      - go_posts_dev
+
   db:
     image: postgres:alpine
     container_name: go-posts-db
@@ -24,10 +27,14 @@ services:
       POSTGRES_USER: post_user
       POSTGRES_PASSWORD: post_pass
       POSTGRES_DB: posts_database
-    ports:
-      - "5432:5432"
-#     volumes:
-#       - postgres-db:/var/lib/postgresql/data
+    volumes:
+      - postgres-db:/var/lib/postgresql/data
+    networks:
+      - go_posts_dev
 
-# volumes:
-#   postgres-db:
+networks:
+  go_posts_dev:
+    driver: bridge
+
+volumes:
+  postgres-db:
