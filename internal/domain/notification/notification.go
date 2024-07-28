@@ -38,3 +38,7 @@ func (n *Notification) GetErrorsMessage() string {
 
 	return errorsString
 }
+
+func (n *Notification) ClearErrors() {
+	n.errors = []error{}
+}
