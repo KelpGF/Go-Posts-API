@@ -26,19 +26,23 @@ func (p *MockPost) GetId() string {
 }
 
 func (p *MockPost) GetTitle() string {
-	return "Title"
+	args := p.Called()
+	return args.String(0)
 }
 
 func (p *MockPost) GetBody() string {
-	return "Body"
+	args := p.Called()
+	return args.String(0)
 }
 
 func (p *MockPost) GetAuthorName() string {
-	return "AuthorName"
+	args := p.Called()
+	return args.String(0)
 }
 
 func (p *MockPost) GetPublishedAt() time.Time {
-	return time.Date(2021, 1, 1, 0, 0, 0, 0, time.UTC)
+	args := p.Called()
+	return args.Get(0).(time.Time)
 }
 
 func (p *MockPost) GetCreatedAt() time.Time {
