@@ -18,16 +18,18 @@ Go http server about Posts.
 
 ## Commands
 
-### Run
+### Development
+
+É iniciado um container com o banco de dados PostgreSQL e outro com a aplicação Go.
+
+O entrypoint do app é `tail -f /dev/null` para manter o container rodando. Dessa forma consigo acessar o container e rodar os comandos necessários.
 
 ```bash
-sh ./scripts/compose-up.sh
+sh scripts/start-dev.sh
 ```
 
-### Stop
-
 ```bash
-sh ./scripts/compose-down.sh
+sh scripts/stop-dev.sh
 ```
 
 ## Considerações
