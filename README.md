@@ -1,6 +1,10 @@
 # Go-Posts-API
 
-Go http server about Posts.
+Go http server sobre Posts,
+
+Aqui está a documentação da API: [Documentação](http://localhost:3000/docs/index.html)
+
+E o modelo das datas é `2024-06-27T20:30:15.161109201Z`
 
 ## Topics
 
@@ -18,6 +22,8 @@ Go http server about Posts.
 
 ## Commands
 
+Obs.: Cuidados com containers ativos para não haver conflitos de portas.
+
 ### Development
 
 É iniciado um container com o banco de dados PostgreSQL e outro com a aplicação Go.
@@ -33,6 +39,8 @@ sh scripts/stop-dev.sh
 ```
 
 ### Production
+
+É iniciado um container com a aplicação Go já funcional (ideal para testar as rotas).
 
 ```bash
 sh scripts/start.sh
@@ -51,3 +59,4 @@ sh scripts/stop.sh
 - Normalmente crio uma camada entre o caso de uso e o handler http. Essa camada são as controller que possui assinaturas de funções únicas com tipos únicos HttpRequest e HttpResponse. Isso facilita a criação de testes unitários e também facilita caso seja necessário trocar o framework HTTP. Nesse projeto não criei essa camada, pois achei que não era necessário porém gostaria de informar essa prática.
 - Também crio uma camada chamada DAO entre a Repository e a instância direta do banco de dados. Mas também não achei necessário para esse projeto. Crio essa camada pois em alguns projetos os objetos de domínio tem estruturas diferentes das tabelas do banco de dados. Nesse caso, a camada Repository é responsável por converter os objetos de domínio um formato melhor para o banco de dados (e também o contrário) e a camada DAO é responsável por acessar o banco de dados.
 - Os mocks dos testes estão no mesmo arquivo dos testes. Normalmente eu crio uma pasta chamada mocks e coloco os mocks lá. Mas nesse projeto não achei necessário pois os mocks são utilizados apenas nos testes, exceto pelo mock de Post.
+- Normalmente temos um banco em algum servidor já com todas as tabelas e dados. Como não tenho, mantive as migration. Mas em um projeto real, eu não utilizaria migrations.
